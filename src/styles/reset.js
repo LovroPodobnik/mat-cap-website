@@ -5,7 +5,6 @@ export const reset = css`
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    border: 0 solid var(--color-border);
   }
 
   html, body {

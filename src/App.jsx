@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
 import Layout from './components/Layout'
@@ -9,16 +9,21 @@ import Gallery from './pages/Gallery'
 import Book from './pages/Book'
 import GlobalStyles from './styles/GlobalStyles'
 import MasonryBackground from './components/MasonryBackground'
+import RetroEffect from './components/RetroEffect'
 
 function App() {
   const location = useLocation()
   const isHomePage = location.pathname === '/'
+  const [retroEffectEnabled, setRetroEffectEnabled] = useState(true)
 
   return (
     <>
       <GlobalStyles />
       {isHomePage && <MasonryBackground itemCount={20} />}
       <Layout isHomePage={isHomePage}>
+        <button onClick={() => setRetroEffectEnabled(!retroEffectEnabled)}>
+          Toggle Retro Effect
+        </button>
         <AnimatePresence mode="wait">
           <Routes location={location} key={location.pathname}>
             <Route path="/" element={<Home />} />
@@ -29,6 +34,7 @@ function App() {
           </Routes>
         </AnimatePresence>
       </Layout>
+      <RetroEffect isEnabled={retroEffectEnabled} />
     </>
   )
 }

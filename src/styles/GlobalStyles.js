@@ -61,10 +61,10 @@ const GlobalStyles = createGlobalStyle`
   ${layout}
   ${animations}
 
-  html, body, #root {
+  html, body {
     min-height: 100%;
     height: auto;
-    background-color: #000000;
+    background-color: #000000; // Ensure black background
   }
 
   body {
@@ -77,6 +77,27 @@ const GlobalStyles = createGlobalStyle`
     flex: 1;
     display: flex;
     flex-direction: column;
+    background-color: transparent; // Ensure this is transparent
+  }
+
+  /* Layout rules */
+  .container {
+    width: 100%;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 0 1rem;
+    background-color: transparent; // Ensure this is transparent
+  }
+
+  /* Ensure content is centered on larger screens */
+  @media (min-width: calc(var(--max-width) + 2rem)) {
+    #root {
+      align-items: center;
+    }
+
+    .container {
+      padding: 0;
+    }
   }
 
   ::-webkit-scrollbar {

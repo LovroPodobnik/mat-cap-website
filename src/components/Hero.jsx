@@ -19,7 +19,7 @@ const HeroContent = styled.div`
   width: 100%;
   max-width: 600px;
   text-align: center;
-  ${props => props.removeBackground ? `
+  ${props => props.$removeBackground ? `
     // Add any styles for transparent background here
   ` : `
     background-color: rgba(0, 0, 0, 0.7);
@@ -32,7 +32,7 @@ const HeroContent = styled.div`
 const Hero = ({ removeBackground = false }) => {
   return (
     <HeroContainer>
-      <HeroContent removeBackground={removeBackground}>
+      <HeroContent $removeBackground={removeBackground}>
         <StaggerContainer delay={0.2}>
           <H1 align="center">Mat Cap Tattoo Studio</H1>
           <Spacing size="1rem" />

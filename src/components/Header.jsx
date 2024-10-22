@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
 const HeaderContainer = styled.header`
+  width: 100%;
   padding: 2rem 1rem;
   position: fixed;
   top: 0;
@@ -16,6 +17,12 @@ const HeaderContainer = styled.header`
   @media (max-width: 768px) {
     padding: 1rem;
   }
+`;
+
+const HeaderContent = styled.div`
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 1rem;
 `;
 
 const Logo = styled.img`
@@ -52,9 +59,11 @@ const NavLink = styled(Link)`
 const Header = () => {
   return (
     <HeaderContainer>
-      <Link to="/">
-        <Logo src="https://matcap.si/images/matcap-logo-header-01.svg" alt="Matcap Tattoo Logo" />
-      </Link>
+      <HeaderContent>
+        <Link to="/">
+          <Logo src="https://matcap.si/images/matcap-logo-header-01.svg" alt="Matcap Tattoo Logo" />
+        </Link>
+      </HeaderContent>
     </HeaderContainer>
   )
 }
