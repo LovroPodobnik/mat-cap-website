@@ -9,76 +9,127 @@ import { H1, H2, Paragraph, SmallText } from '../components/Typography'
 import Spacing from '../components/Spacing'
 import Button from '../components/Button'
 import Container from '../components/Container'
-import ImageCarousel from '../components/ImageCarousel'
 import 'leaflet/dist/leaflet.css'
+import L from 'leaflet'
+
+// Fix for default marker icon in leaflet
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: '/marker-icon-2x.png',
+  iconUrl: '/marker-icon.png',
+  shadowUrl: '/marker-shadow.png',
+});
 
 const PageContainer = styled(Container)`
   padding: 2rem 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: 100vh;
+  min-height: calc(100vh - 120px); // Account for header/footer
 `
 
 const ContactGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
   width: 100%;
-  margin-bottom: 2rem;
+  margin: 2rem 0;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
+    gap: 1rem;
   }
 `
 
-const ContactCard = styled.div`
-  background-color: rgba(255, 255, 255, 0.05);
-  border-radius: 8px;
-  padding: 1.5rem;
+const ContactCard = styled(motion.div)`
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 2rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  a {
+    color: var(--color-text);
+    text-decoration: none;
+    transition: color 0.3s ease;
+
+    &:hover {
+      color: var(--color-primary);
+    }
   }
 `
 
 const IconWrapper = styled.div`
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
   color: var(--color-primary);
+  padding: 1rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 `
 
-const MapWrapper = styled.div`
+const MapWrapper = styled(motion.div)`
   width: 100%;
-  height: 300px;
-  border-radius: 8px;
+  height: 400px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  margin-top: 2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+  margin: 2rem 0;
+
+  .leaflet-container {
+    height: 100%;
+    width: 100%;
+    background: #333;
+  }
+
+  .leaflet-popup-content-wrapper {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 8px;
+    backdrop-filter: blur(10px);
+  }
+
+  .leaflet-popup-tip {
+    background: rgba(0, 0, 0, 0.8);
+  }
 
   @media (max-width: 768px) {
-    height: 250px;
+    height: 300px;
   }
 `
 
 const SocialLinks = styled.div`
   display: flex;
   justify-content: center;
-  margin-top: 2rem;
+  gap: 2rem;
+  margin: 2rem 0;
 `
 
-const SocialLink = styled.a`
+const SocialLink = styled(motion.a)`
   color: var(--color-text);
-  margin: 0 1rem;
-  transition: color 0.3s ease;
+  padding: 0.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
 
   &:hover {
     color: var(--color-primary);
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateY(-2px);
   }
 `
 
@@ -89,51 +140,40 @@ const Divider = styled.hr`
   margin: 2rem 0;
 `
 
-const FooterText = styled(SmallText)`
-  text-align: center;
-  opacity: 0.7;
-`
-
-const CarouselWrapper = styled.div`
-  width: 100%;
-  max-width: 600px;
-  margin: 2rem auto;
-`;
-
 const Contact = () => {
-  const position = [46.225890, 14.612338] // Latitude and longitude for Glavni trg 7, 1241 Kamnik, Slovenia
-
-  const galleryImages = [
-    '/Images/About/IMG_2045-min-min.jpeg',
-    '/Images/About/IMG_3188-min-min.jpeg',
-    '/Images/About/IMG_3197-min-min.jpeg',
-    '/Images/About/IMG_3589-min-min.jpeg'
-  ];
+  const position = [46.225890, 14.612338]
 
   return (
     <motion.div {...pageTransition}>
       <PageContainer>
         <StaggerContainer>
-          <H1>Kontaktirajte nas</H1>
+          <H1 align="center">Kontaktirajte nas</H1>
           <Spacing size="1rem" />
           
           <ContactGrid>
-            <ContactCard>
+            <ContactCard whileHover={{ y: -5 }}>
               <IconWrapper><MapPin size={24} /></IconWrapper>
               <H2>Naslov</H2>
               <Paragraph>Glavni trg 7, 1241 Kamnik, Slovenija</Paragraph>
             </ContactCard>
-            <ContactCard>
+
+            <ContactCard whileHover={{ y: -5 }}>
               <IconWrapper><Phone size={24} /></IconWrapper>
               <H2>Telefon</H2>
-              <Paragraph><a href="tel:+38640208816">+386 40 208 816</a></Paragraph>
+              <Paragraph>
+                <a href="tel:+38640208816">+386 40 208 816</a>
+              </Paragraph>
             </ContactCard>
-            <ContactCard>
+
+            <ContactCard whileHover={{ y: -5 }}>
               <IconWrapper><Mail size={24} /></IconWrapper>
               <H2>E-pošta</H2>
-              <Paragraph><a href="mailto:tattoo@matcap.si">tattoo@matcap.si</a></Paragraph>
+              <Paragraph>
+                <a href="mailto:tattoo@matcap.si">tattoo@matcap.si</a>
+              </Paragraph>
             </ContactCard>
-            <ContactCard>
+
+            <ContactCard whileHover={{ y: -5 }}>
               <IconWrapper><Clock size={24} /></IconWrapper>
               <H2>Delovni čas</H2>
               <Paragraph>
@@ -144,6 +184,29 @@ const Contact = () => {
             </ContactCard>
           </ContactGrid>
 
+          <MapWrapper
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+          >
+            <MapContainer 
+              center={position} 
+              zoom={15} 
+              scrollWheelZoom={false}
+            >
+              <TileLayer
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+              />
+              <Marker position={position}>
+                <Popup>
+                  <strong>Matcap Tattoo Studio</strong><br />
+                  Glavni trg 7, 1241 Kamnik
+                </Popup>
+              </Marker>
+            </MapContainer>
+          </MapWrapper>
+
           <Button 
             as="a" 
             href="https://goo.gl/maps/XYZ123" 
@@ -152,47 +215,35 @@ const Contact = () => {
             variant="outline"
             size="medium"
           >
-            Pokaži na zemljevidu <ExternalLink size={14} style={{ marginLeft: '0.5rem' }} />
+            Odpri v Google Maps <ExternalLink size={14} style={{ marginLeft: '0.5rem' }} />
           </Button>
-
-          <Spacing size="2rem" />
-
-          <H2>Naše delo</H2>
-          <CarouselWrapper>
-            <ImageCarousel images={galleryImages} />
-          </CarouselWrapper>
-
-          <MapWrapper>
-            <MapContainer center={position} zoom={15} style={{ height: '100%', width: '100%' }}>
-              <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              />
-              <Marker position={position}>
-                <Popup>
-                  Matcap Tattoo Studio<br />Glavni trg 7, 1241 Kamnik
-                </Popup>
-              </Marker>
-            </MapContainer>
-          </MapWrapper>
 
           <Divider />
 
           <SocialLinks>
-            <SocialLink href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+            <SocialLink 
+              href="https://instagram.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <Instagram size={24} />
             </SocialLink>
-            <SocialLink href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+            <SocialLink 
+              href="https://facebook.com" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              whileHover={{ y: -2 }}
+              whileTap={{ scale: 0.95 }}
+            >
               <Facebook size={24} />
             </SocialLink>
           </SocialLinks>
 
-          <Spacing size="2rem" />
-          
-          <FooterText>©2022 Matcap Tattoo. Vse pravice pridržane.</FooterText>
-          <FooterText>
-            Izdelava: <a href="https://lovropodobnik.si" target="_blank" rel="noopener noreferrer">lovropodobnik.si</a>
-          </FooterText>
+          <SmallText style={{ opacity: 0.7, textAlign: 'center' }}>
+            ©2024 Matcap Tattoo. Vse pravice pridržane.
+          </SmallText>
         </StaggerContainer>
       </PageContainer>
     </motion.div>

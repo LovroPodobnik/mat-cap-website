@@ -27,10 +27,10 @@ const ContentContainer = styled.div`
   background-color: transparent; // Ensure this is transparent
 `;
 
-const Layout = ({ children, isHomePage }) => {
+const Layout = ({ children, isHomePage, hideHeader = false }) => {
   return (
     <LayoutContainer>
-      <Header />
+      <Header isHidden={hideHeader} />
       <Main $isHomePage={isHomePage}>
         <ContentContainer>
           {children}

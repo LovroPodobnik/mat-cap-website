@@ -116,6 +116,13 @@ const GlobalStyles = createGlobalStyle`
   ::-webkit-scrollbar-thumb:hover {
     background: var(--color-secondary);
   }
+
+  // Add styles to hide bottom navigation
+  body.hide-bottom-nav {
+    .bottom-nav {
+      display: none !important;
+    }
+  }
 `
 
 export default GlobalStyles

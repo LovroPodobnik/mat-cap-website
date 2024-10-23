@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Star, Image, Mail, HelpCircle, Heart } from 'react-feather';
+import { Star, Image, Mail, HelpCircle, Heart, BookOpen } from 'react-feather';
 
 const navItems = [
   { href: '/', label: 'Home', icon: Star },
   { href: '/gallery', label: 'Gallery', icon: Image },
+  { href: '/faq', label: 'FAQ', icon: BookOpen },
   { href: '/contact', label: 'Contact', icon: Mail },
   { href: '/about', label: 'About', icon: HelpCircle },
 ];
@@ -17,6 +18,10 @@ const BottomNav = styled(motion.nav)`
   left: 0;
   right: 0;
   z-index: 50;
+  // Add the class name for targeting
+  &.bottom-nav {
+    transition: opacity 0.3s ease;
+  }
 `;
 
 const NavContainer = styled.div`
@@ -146,6 +151,7 @@ const BottomNavigation = () => {
     <AnimatePresence>
       {isVisible && (
         <BottomNav
+          className="bottom-nav"
           initial={{ y: 100 }}
           animate={{ y: 0 }}
           exit={{ y: 100 }}

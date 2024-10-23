@@ -23,20 +23,22 @@ export const HeroContent = styled.div`
 `;
 
 export const HeroTitle = styled.h1`
+  font-family: var(--font-family-heading);
   font-size: var(--font-size-4xl);
   color: var(--color-primary);
   margin-bottom: 1rem;
   letter-spacing: 0.02em;
-  font-weight: 700;
+  font-weight: 400;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 `;
 
 export const HeroSubtitle = styled.h2`
+  font-family: var(--font-family-heading);
   font-size: var(--font-size-xl);
   margin-bottom: 1.5rem;
   color: var(--color-secondary);
   letter-spacing: 0.02em;
-  font-weight: 500;
+  font-weight: 400;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
 `;
 

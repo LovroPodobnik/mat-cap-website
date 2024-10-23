@@ -1,8 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import styled from 'styled-components'
+import { motion, AnimatePresence } from 'framer-motion'
 
-const HeaderContainer = styled.header`
+const HeaderContainer = styled(motion.header)`
   width: 100%;
   padding: 2rem 1rem;
   position: fixed;
@@ -13,6 +14,10 @@ const HeaderContainer = styled.header`
   display: flex;
   flex-direction: column;
   align-items: center;
+  pointer-events: ${props => props.$isHidden ? 'none' : 'auto'};
+  opacity: ${props => props.$isHidden ? 0 : 1};
+  transform: translateY(${props => props.$isHidden ? '-100%' : '0'});
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 
   @media (max-width: 768px) {
     padding: 1rem;
@@ -56,15 +61,25 @@ const NavLink = styled(Link)`
   }
 `;
 
-const Header = () => {
+const Header = ({ isHidden = false }) => {
   return (
-    <HeaderContainer>
-      <HeaderContent>
-        <Link to="/">
-          <Logo src="https://matcap.si/images/matcap-logo-header-01.svg" alt="Matcap Tattoo Logo" />
-        </Link>
-      </HeaderContent>
-    </HeaderContainer>
+    <AnimatePresence>
+      {!isHidden && (
+        <HeaderContainer
+          $isHidden={isHidden}
+          initial={{ opacity: 0, y: -100 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -100 }}
+          transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        >
+          <HeaderContent>
+            <Link to="/">
+              <Logo src="https://matcap.si/images/matcap-logo-header-01.svg" alt="Matcap Tattoo Logo" />
+            </Link>
+          </HeaderContent>
+        </HeaderContainer>
+      )}
+    </AnimatePresence>
   )
 }
 
