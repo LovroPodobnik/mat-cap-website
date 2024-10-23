@@ -199,11 +199,8 @@ const GalleryGrid = ({ images, setHideHeader }) => {
   };
 
   const openLightbox = (index) => {
-    setSelectedImage({
-      ...images[index],
-      src: images[index].fullSrc || images[index].src
-    });
     setCurrentIndex(index);
+    setSelectedImage(images[index]);
     hideNavigation();
   };
 
@@ -214,23 +211,17 @@ const GalleryGrid = ({ images, setHideHeader }) => {
 
   const showNext = () => {
     if (currentIndex < images.length - 1) {
-      hideNavigation(); // Keep navigation hidden
-      setCurrentIndex(currentIndex + 1);
-      setSelectedImage({
-        ...images[currentIndex + 1],
-        src: images[currentIndex + 1].fullSrc || images[currentIndex + 1].src
-      });
+      const nextIndex = currentIndex + 1;
+      setCurrentIndex(nextIndex);
+      setSelectedImage(images[nextIndex]); // Update the selected image
     }
   };
 
   const showPrevious = () => {
     if (currentIndex > 0) {
-      hideNavigation(); // Keep navigation hidden
-      setCurrentIndex(currentIndex - 1);
-      setSelectedImage({
-        ...images[currentIndex - 1],
-        src: images[currentIndex - 1].fullSrc || images[currentIndex - 1].src
-      });
+      const prevIndex = currentIndex - 1;
+      setCurrentIndex(prevIndex);
+      setSelectedImage(images[prevIndex]); // Update the selected image
     }
   };
 
@@ -319,9 +310,14 @@ const GalleryGrid = ({ images, setHideHeader }) => {
                 <ChevronLeft size={24} />
               </NavigationButton>
 
-              <img
-                src={selectedImage.src}
+              <motion.img
+                key={selectedImage.src} // Add key to force re-render
+                src={selectedImage.fullSrc || selectedImage.src}
                 alt={selectedImage.alt || 'Selected image'}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
               />
 
               <NavigationButton

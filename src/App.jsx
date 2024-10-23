@@ -12,6 +12,7 @@ import GlobalStyles from './styles/GlobalStyles'
 import MasonryBackground from './components/MasonryBackground'
 import RetroEffect from './components/RetroEffect'
 import Experimental from './pages/Experimental'
+import SocialMediaLinks from './components/SocialMediaLinks'
 
 function App() {
   const location = useLocation()
@@ -35,6 +36,7 @@ function App() {
           </Routes>
         </AnimatePresence>
       </Layout>
+      <SocialMediaLinks />
       <RetroEffect />
     </>
   )

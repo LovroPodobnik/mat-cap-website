@@ -6,6 +6,7 @@ import StaggerContainer from '../components/StaggerContainer'
 import { H1, H2, Paragraph } from '../components/Typography'
 import Spacing from '../components/Spacing'
 import ImageCarousel from '../components/ImageCarousel'
+import HoverGif from '../components/HoverGif'
 
 const AboutContainer = styled(motion.div)`
   padding: 2rem 0;
@@ -43,30 +44,33 @@ const About = () => {
   return (
     <AboutContainer {...pageTransition}>
       <StaggerContainer>
-        <ContentSection>
-          <H1 align="center">Moja zgodba</H1>
-          <Spacing size="2rem" />
-        </ContentSection>
-        
-        <ContentSection>
-          <H2>Začetki</H2>
-          <Paragraph>
-            Spomnim se, kako so se mi tresle roke, ko sem v kožo zarisal prvo linijo. 
-            Prva žrtev, ki si je dovolil tetovirati črko c na nogo - in to kar doma v kleti - je bil moj brat.
-          </Paragraph>
-          <Spacing size="1rem" />
-          
-          <Paragraph>
-            Po desetletju tetoviranja, ze dolgo ne delam več doma. Pa tudi klet sem rajši zamenjal 
-            za prijetnejši ambient in odprl studio v starem mestnem jedru kamnika. Mat cap tattoo 
-            studio nosi ime po vzdevku, ki so mi ga nadeli kolegi - zanje nisem Matic - kličejo me Cap.
-          </Paragraph>
-        </ContentSection>
-        
+        <H1>O meni</H1>
         <CarouselWrapper>
           <ImageCarousel images={galleryImages} />
         </CarouselWrapper>
 
+        <ContentSection>
+          <H2>Začetki</H2>
+          <Paragraph>
+            Spomnim se, kako so se mi{' '}
+            <HoverGif 
+              gifUrl="https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExandqc3o4YmsyOGk1cnhlbWc5NXg0d2RmYnNueTI1YWZ0ZXVhNmRqZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bDgVQW4bTLsgo/giphy.gif"
+            >
+              tresle roke
+            </HoverGif>
+            , ko sem v kožo zarisal prvo linijo. Prva žrtev, ki si je dovolil tetovirati 
+            črko c na nogo - in to kar doma v kleti - je bil moj brat.
+          </Paragraph>
+          <Spacing size="1rem" />
+          
+          <Paragraph>
+            Po desetletju tetoviranja, ze dolgo ne delam več doma. Pa tudi klet sem rajši 
+            zamenjal za prijetnejši ambient in odprl studio v starem mestnem jedru kamnika. 
+            Mat cap tattoo studio nosi ime po vzdevku, ki so mi ga nadeli kolegi - zanje 
+            nisem Matic - kličejo me Cap.
+          </Paragraph>
+        </ContentSection>
+        
         <ContentSection>
           <H2>Umetniška pot</H2>
           <Paragraph>

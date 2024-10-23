@@ -53,6 +53,23 @@ const NavItemContainer = styled.div`
   align-items: stretch;
   flex: 1;
   margin: 0 0.25rem;
+  position: relative;
+
+  &:not(:last-child):not(:nth-last-child(2))::after {
+    content: '';
+    position: absolute;
+    right: -0.25rem;
+    top: 15%;
+    height: 70%;
+    width: 1px;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      rgba(255, 255, 255, 0.15) 30%,
+      rgba(255, 255, 255, 0.15) 70%,
+      transparent
+    );
+  }
 `;
 
 const NavItemLink = styled(Link)`
@@ -63,22 +80,29 @@ const NavItemLink = styled(Link)`
   width: 100%;
   height: 100%;
   padding: 0.5rem;
-  border-radius: 9999px;
+  border-radius: 12px; // Less radius for mobile
   transition: all 0.2s ease-in-out;
-  color: ${props => props.$isActive ? 'var(--color-text)' : '#BEBEBE'};
+  text-decoration: none;
+  color: #BEBEBE;
   background-color: ${props => props.$isActive ? 'rgba(255, 255, 255, 0.1)' : 'transparent'};
 
   &:hover {
-    color: var(--color-text);
+    color: var(--color-primary);
     background-color: rgba(255, 255, 255, 0.05);
   }
 
   ${props => props.$isSpecial && `
-    background-color: #3B3B3B;
-    color: #C4C4C4;
+    background-color: var(--color-primary);
+    color: #000000;
 
     &:hover {
-      background-color: #4A4A4A;
+      background-color: var(--color-secondary);
+      color: #000000;
+    }
+
+    // Override any other hover states for special items
+    & ${NavItemIcon}, & ${NavItemLabel} {
+      color: #000000;
     }
   `}
 
@@ -86,6 +110,7 @@ const NavItemLink = styled(Link)`
     flex-direction: row;
     justify-content: center;
     padding: 0.5rem 1rem;
+    border-radius: 9999px; // Return to pill shape on desktop
   }
 `;
 
@@ -93,6 +118,10 @@ const NavItemIcon = styled.div`
   width: 1.5rem;
   height: 1.5rem;
   margin-bottom: 0.25rem;
+  color: ${props => props.$isActive ? 'var(--color-primary)' : 'inherit'};
+  ${props => props.$isSpecial && `
+    color: #000000;
+  `}
 
   @media (min-width: 768px) {
     width: 1.25rem;
@@ -106,6 +135,10 @@ const NavItemLabel = styled.span`
   font-size: 0.75rem;
   font-weight: 500;
   white-space: nowrap;
+  color: ${props => props.$isActive ? 'var(--color-text)' : 'inherit'};
+  ${props => props.$isSpecial && `
+    color: #000000;
+  `}
 
   @media (max-width: 767px) {
     display: none;
@@ -120,8 +153,8 @@ const NavItem = ({ item, isActive, isSpecial, isLast }) => (
       style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
     >
       <NavItemLink to={item.href} $isActive={isActive} $isSpecial={isSpecial} className="springAnimation hoverScale">
-        <NavItemIcon as={item.icon} />
-        <NavItemLabel>{item.label}</NavItemLabel>
+        <NavItemIcon as={item.icon} $isActive={isActive} $isSpecial={isSpecial} />
+        <NavItemLabel $isActive={isActive} $isSpecial={isSpecial}>{item.label}</NavItemLabel>
       </NavItemLink>
     </motion.div>
   </NavItemContainer>

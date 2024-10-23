@@ -24,6 +24,8 @@ const FAQContainer = styled.div`
 `
 
 const FAQ = () => {
+  const [hideHeader, setHideHeader] = React.useState(false);
+
   const faqData = [
     {
       question: "Ali oblikujete tetovaže vnaprej ali na samem terminu?",
@@ -85,7 +87,10 @@ const FAQ = () => {
         <FAQContainer>
           <StaggerContainer>
             <H1 align="center">Pogosta vprašanja</H1>
-            <FAQAccordion items={faqData} />
+            <FAQAccordion 
+              items={faqData} 
+              setHideHeader={setHideHeader} 
+            />
           </StaggerContainer>
         </FAQContainer>
       </PageContainer>
