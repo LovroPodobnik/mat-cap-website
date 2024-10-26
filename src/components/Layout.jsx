@@ -1,14 +1,20 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Header from './Header';
 import BottomNavigation from './BottomNavigation';
 
 const LayoutContainer = styled.div`
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
+  position: relative;
   width: 100%;
-  background-color: transparent; // Ensure this is transparent
+
+  // Only apply max-width constraint for non-admin pages
+  ${props => !props.$isAdmin && css`
+    max-width: var(--max-width);
+    margin: 0 auto;
+  `}
 `;
 
 const Main = styled.main`
@@ -27,10 +33,10 @@ const ContentContainer = styled.div`
   background-color: transparent; // Ensure this is transparent
 `;
 
-const Layout = ({ children, isHomePage, hideHeader = false }) => {
+const Layout = ({ children, isHomePage, hideHeader = false, isAdmin }) => {
   return (
-    <LayoutContainer>
-      <Header isHidden={hideHeader} />
+    <LayoutContainer $isAdmin={isAdmin}>
+      {!hideHeader && <Header isHomePage={isHomePage} />}
       <Main $isHomePage={isHomePage}>
         <ContentContainer>
           {children}

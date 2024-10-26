@@ -89,13 +89,13 @@ const GlobalStyles = createGlobalStyle`
     background-color: transparent; // Ensure this is transparent
   }
 
-  /* Ensure content is centered on larger screens */
+  /* Ensure content is centered on larger screens - but not for admin */
   @media (min-width: calc(var(--max-width) + 2rem)) {
-    #root {
+    body:not(.admin-layout) #root {
       align-items: center;
     }
 
-    .container {
+    body:not(.admin-layout) .container {
       padding: 0;
     }
   }
@@ -122,6 +122,42 @@ const GlobalStyles = createGlobalStyle`
     .bottom-nav {
       display: none !important;
     }
+  }
+
+  /* Admin layout overrides */
+  body.admin-layout {
+    #root {
+      max-width: none !important;
+      padding: 0 !important;
+      text-align: left !important;
+      align-items: stretch !important; /* Change from flex-start to stretch */
+      width: 100% !important;
+    }
+
+    .container {
+      max-width: none !important;
+      padding: 0 !important;
+      width: 100% !important;
+    }
+
+    main {
+      width: 100% !important;
+      max-width: none !important;
+    }
+  }
+
+  /* Remove the centering styles for admin pages */
+  body.admin-layout #root {
+    align-items: stretch;
+    max-width: none;
+    padding: 0;
+    width: 100%;
+  }
+
+  body.admin-layout .container {
+    max-width: none;
+    padding: 0;
+    width: 100%;
   }
 `
 

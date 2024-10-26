@@ -37,10 +37,10 @@ const paragraphStyles = css`
 `;
 
 export const H1 = styled.h1`
-  ${headingStyles}
-  font-size: var(--font-size-4xl);
-  margin-bottom: 0.5em;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: var(--font-size-2xl);
+  margin-bottom: 1rem;
+  text-align: ${props => props.$align || 'left'};
+  font-family: 'Instrument Serif', serif;
 `;
 
 export const H2 = styled.h2`
