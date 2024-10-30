@@ -2,58 +2,55 @@ import { css } from 'styled-components'
 
 export const typography = css`
   :root {
-    /* Base Size - 16px */
-    --font-size-base: 1rem;
+    /* Base Size - 14px for paragraphs */
+    --font-size-base: 0.875rem;  /* 14px */
 
-    /* Type Scale Using Modern Ratio (1.250 - Major Third) */
-    --font-size-xs: calc(var(--font-size-base) * 0.64);      /* 10.24px */
-    --font-size-sm: calc(var(--font-size-base) * 0.8);       /* 12.80px */
-    --font-size-md: var(--font-size-base);                   /* 16.00px */
-    --font-size-lg: calc(var(--font-size-base) * 1.25);      /* 20.00px */
-    --font-size-xl: calc(var(--font-size-base) * 1.563);     /* 25.00px */
-    --font-size-2xl: calc(var(--font-size-base) * 1.953);    /* 31.25px */
-    --font-size-3xl: calc(var(--font-size-base) * 2.441);    /* 39.06px */
-    --font-size-4xl: calc(var(--font-size-base) * 3.052);    /* 48.83px */
+    /* Type Scale Using Custom Ratio */
+    --font-size-xs: calc(var(--font-size-base) * 0.857);    /* 12px */
+    --font-size-sm: var(--font-size-base);                  /* 14px */
+    --font-size-md: calc(var(--font-size-base) * 1.143);    /* 16px */
+    --font-size-lg: calc(var(--font-size-base) * 1.286);    /* 18px */
+    --font-size-xl: calc(var(--font-size-base) * 1.429);    /* 20px */
+    --font-size-2xl: calc(var(--font-size-base) * 1.714);   /* 24px */
+    --font-size-3xl: calc(var(--font-size-base) * 2.143);   /* 30px */
+    --font-size-4xl: calc(var(--font-size-base) * 2.571);   /* 36px */
     
-    /* Line Heights Mapped to Font Sizes */
-    --line-height-xs: 1.1;    /* Headings */
-    --line-height-sm: 1.2;    /* Subheadings */
-    --line-height-md: 1.5;    /* Body text */
-    --line-height-lg: 1.7;    /* Large body text */
+    /* Line Heights - Adjusted for 14px base */
+    --line-height-tight: 1.2;      /* Headings */
+    --line-height-base: 1.6;       /* Better readability for smaller text */
+    --line-height-relaxed: 1.75;   /* Relaxed reading */
     
-    /* Letter Spacing */
-    --letter-spacing-tight: -0.05em;
-    --letter-spacing-normal: 0;
-    --letter-spacing-wide: 0.05em;
+    /* Letter Spacing - Adjusted for 14px */
+    --letter-spacing-tight: -0.015em;
+    --letter-spacing-base: -0.01em;
+    --letter-spacing-wide: 0.015em;
     
-    /* Font Weights */
-    --font-weight-normal: 400;
-    --font-weight-medium: 500;
-    --font-weight-bold: 700;
+    /* Font Families - Unchanged */
+    --font-family-heading: "Instrument Serif", serif;
+    --font-family-body: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    
+    /* Colors - Unchanged */
+    --color-heading: rgba(255, 255, 255, 0.95);
+    --color-text-muted: rgba(255, 255, 255, 0.75);
+    --color-text-subtle: rgba(255, 255, 255, 0.6);
 
-    /* Responsive Type Scales */
-    @media (min-width: 768px) {
-      --font-size-base: 1.125rem; /* 18px base for larger screens */
+    /* Mobile-First Responsive Type Scales */
+    @media (min-width: 375px) {
+      --font-size-base: 0.9375rem;  /* 15px for larger phones */
     }
 
-    @media (min-width: 1024px) {
-      --font-size-base: 1.25rem;  /* 20px base for desktop */
+    @media (min-width: 768px) {
+      --font-size-base: 1rem;       /* 16px for tablets */
     }
   }
 
   body {
     font-family: var(--font-family-body);
-    font-size: var(--font-size-md);
+    font-size: var(--font-size-sm); /* Use sm size for base paragraph text */
     line-height: var(--line-height-base);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
     font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
-  }
-
-  @media (min-width: 768px) {
-    body {
-      font-size: calc(var(--font-size-md) * 1.05);
-    }
   }
 `

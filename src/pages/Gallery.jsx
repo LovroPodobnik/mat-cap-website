@@ -71,31 +71,90 @@ const Gallery = ({ setHideHeader }) => {
     setHideHeader(false); // Show header when closing experimental view
   };
 
-  // Using high-resolution images with proper aspect ratios
   const galleryImages = [
     {
-      src: 'https://picsum.photos/800/800?random=1', // Square for thumbnail
-      fullSrc: 'https://picsum.photos/1200/1600?random=1', // Original aspect ratio for lightbox
-      alt: 'Black and grey realism tattoo',
+      src: '/Images/Gallery/IMG_2042-min-min.jpeg',
+      fullSrc: '/Images/Gallery/IMG_2042-min-min.jpeg',
+      alt: 'Tattoo artwork',
       category: 'realism'
     },
     {
-      src: 'https://picsum.photos/800/800?random=2',
-      fullSrc: 'https://picsum.photos/1200/1600?random=2',
-      alt: 'Blackwork tattoo design',
+      src: '/Images/Gallery/IMG_2045-min.jpeg',
+      fullSrc: '/Images/Gallery/IMG_2045-min.jpeg',
+      alt: 'Tattoo design',
       category: 'blackwork'
     },
     {
-      src: 'https://picsum.photos/800/800?random=3',
-      fullSrc: 'https://picsum.photos/1200/1600?random=3',
-      alt: 'Custom lettering tattoo',
-      category: 'lettering'
+      src: '/Images/Gallery/IMG_3047-min.jpeg',
+      fullSrc: '/Images/Gallery/IMG_3047-min.jpeg',
+      alt: 'Tattoo artwork',
+      category: 'realism'
     },
     {
-      src: 'https://picsum.photos/800/800?random=4',
-      fullSrc: 'https://picsum.photos/1200/1600?random=4',
-      alt: 'Realistic portrait tattoo',
+      src: '/Images/Gallery/IMG_3188-min.jpeg',
+      fullSrc: '/Images/Gallery/IMG_3188-min.jpeg',
+      alt: 'Tattoo design',
+      category: 'blackwork'
+    },
+    {
+      src: '/Images/Gallery/IMG_3196-min.jpeg',
+      fullSrc: '/Images/Gallery/IMG_3196-min.jpeg',
+      alt: 'Tattoo artwork',
       category: 'realism'
+    },
+    {
+      src: '/Images/Gallery/IMG_3197-min.jpeg',
+      fullSrc: '/Images/Gallery/IMG_3197-min.jpeg',
+      alt: 'Tattoo design',
+      category: 'blackwork'
+    },
+    {
+      src: '/Images/Gallery/IMG_3198-min.jpeg',
+      fullSrc: '/Images/Gallery/IMG_3198-min.jpeg',
+      alt: 'Tattoo artwork',
+      category: 'realism'
+    },
+    {
+      src: '/Images/Gallery/IMG_3257-min.jpeg',
+      fullSrc: '/Images/Gallery/IMG_3257-min.jpeg',
+      alt: 'Tattoo design',
+      category: 'blackwork'
+    },
+    {
+      src: '/Images/Gallery/IMG_3258-min.jpeg',
+      fullSrc: '/Images/Gallery/IMG_3258-min.jpeg',
+      alt: 'Tattoo artwork',
+      category: 'realism'
+    },
+    {
+      src: '/Images/Gallery/IMG_3259-min.jpeg',
+      fullSrc: '/Images/Gallery/IMG_3259-min.jpeg',
+      alt: 'Tattoo design',
+      category: 'blackwork'
+    },
+    {
+      src: '/Images/Gallery/IMG_3580-min-min.jpeg',
+      fullSrc: '/Images/Gallery/IMG_3580-min-min.jpeg',
+      alt: 'Tattoo artwork',
+      category: 'realism'
+    },
+    {
+      src: '/Images/Gallery/IMG_3581-min-min.jpeg',
+      fullSrc: '/Images/Gallery/IMG_3581-min-min.jpeg',
+      alt: 'Tattoo design',
+      category: 'blackwork'
+    },
+    {
+      src: '/Images/Gallery/IMG_3589-min.jpeg',
+      fullSrc: '/Images/Gallery/IMG_3589-min.jpeg',
+      alt: 'Tattoo artwork',
+      category: 'realism'
+    },
+    {
+      src: '/Images/Gallery/IMG_3820-min-min.jpeg',
+      fullSrc: '/Images/Gallery/IMG_3820-min-min.jpeg',
+      alt: 'Tattoo design',
+      category: 'blackwork'
     }
   ];
 
@@ -104,7 +163,7 @@ const Gallery = ({ setHideHeader }) => {
       <PageContainer>
         <GalleryContainer>
           <StaggerContainer>
-            <H1 align="center">Galerija del</H1>
+            <H1 $align="center">Galerija del</H1>
             
             <ViewToggle>
               <ToggleButton
