@@ -1,132 +1,40 @@
-import * as React from 'react';
-import { 
-  Html, 
-  Button, 
-  Head, 
-  Preview, 
-  Body, 
-  Container, 
-  Section, 
-  Text, 
-  Hr,
-  Link
-} from "@react-email/components";
+import React from 'react';
 
-export function BookingConfirmation({ formData }) {
-  return (
-    <Html>
-      <Head />
-      <Preview>Hvala za vaše sporočilo - Mat Cap Tattoo</Preview>
-      <Body style={main}>
-        <Container style={container}>
-          <Section>
-            <Text style={heading}>Hej {formData.personalInfo.fullName}!</Text>
-            <Text style={paragraph}>
-              Hvala, da si nas kontaktiral/a. V roku tedna dni se slišimo in dorečemo vse glede sodelovanja. 
-              Komaj čakamo, da skupaj ustvarimo nekaj res posebnega!
-            </Text>
+export const BookingConfirmationTemplate = (formData) => {
+  return `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+      <h1 style="color: #333; text-align: center;">Hvala za vaše sporočilo</h1>
+      
+      <p style="color: #666; line-height: 1.6;">
+        Pozdravljeni ${formData.personalInfo.fullName},
+      </p>
+      
+      <p style="color: #666; line-height: 1.6;">
+        Hvala, da ste nas kontaktirali. V roku tedna dni se slišimo in dorečemo vse glede sodelovanja. 
+        Komaj čakamo, da skupaj ustvarimo nekaj res posebnega!
+      </p>
 
-            <Text style={paragraph}>Povzetek vašega povpraševanja:</Text>
-            
-            <Text style={details}>
-              <strong>Velikost:</strong> {formData.tattooDetails.size}<br />
-              <strong>Lokacija:</strong> {formData.tattooDetails.location}<br />
-              <strong>Stil:</strong> {formData.tattooDetails.style}<br />
-              <strong>Prva tetovaža:</strong> {formData.tattooDetails.isFirstTattoo === 'yes' ? 'Da' : 'Ne'}
-            </Text>
+      <div style="margin: 30px 0; padding: 20px; background: #f9f9f9; border-radius: 8px;">
+        <h2 style="color: #333; margin-bottom: 15px;">Vaši podatki:</h2>
+        <p><strong>Ime:</strong> ${formData.personalInfo.fullName}</p>
+        <p><strong>Email:</strong> ${formData.personalInfo.email}</p>
+        <p><strong>Telefon:</strong> ${formData.personalInfo.phone}</p>
+        
+        <h3 style="color: #333; margin-top: 20px;">Detajli tetovaže:</h3>
+        <p><strong>Velikost:</strong> ${formData.tattooDetails.size}</p>
+        <p><strong>Lokacija:</strong> ${formData.tattooDetails.location}</p>
+        <p><strong>Stil:</strong> ${formData.tattooDetails.style}</p>
+        <p><strong>Prva tetovaža:</strong> ${formData.tattooDetails.isFirstTattoo === 'yes' ? 'Da' : 'Ne'}</p>
+      </div>
 
-            <Text style={paragraph}>
-              {formData.tattooIdea.description}
-            </Text>
+      <p style="color: #666; line-height: 1.6;">
+        Lep pozdrav,<br />
+        Mat Cap Tattoo Team
+      </p>
 
-            <Hr style={hr} />
-
-            <Text style={paragraph}>
-              Sledite nam na družbenih omrežjih:
-            </Text>
-
-            <Section style={socialLinks}>
-              <Link 
-                href="https://instagram.com/matcaptattoo" 
-                style={socialLink}
-              >
-                Instagram
-              </Link>
-              <Link 
-                href="https://facebook.com/matcaptattoo" 
-                style={socialLink}
-              >
-                Facebook
-              </Link>
-            </Section>
-
-            <Text style={signature}>
-              Lep pozdrav,<br />
-              Mat Cap Tattoo
-            </Text>
-          </Section>
-        </Container>
-      </Body>
-    </Html>
-  );
-}
-
-const main = {
-  backgroundColor: '#000000',
-  color: '#ffffff',
-  fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif',
+      <div style="margin-top: 40px; text-align: center; color: #999; font-size: 12px;">
+        <p>© ${new Date().getFullYear()} Mat Cap Tattoo. Vse pravice pridržane.</p>
+      </div>
+    </div>
+  `;
 };
-
-const container = {
-  margin: '0 auto',
-  padding: '20px 0 48px',
-  maxWidth: '580px',
-};
-
-const heading = {
-  fontSize: '32px',
-  lineHeight: '1.3',
-  fontWeight: '700',
-  color: '#f4b942',
-};
-
-const paragraph = {
-  fontSize: '16px',
-  lineHeight: '26px',
-  marginBottom: '24px',
-};
-
-const details = {
-  fontSize: '14px',
-  lineHeight: '24px',
-  margin: '24px 0',
-  padding: '24px',
-  backgroundColor: 'rgba(255, 255, 255, 0.05)',
-  borderRadius: '8px',
-};
-
-const hr = {
-  borderColor: 'rgba(255, 255, 255, 0.1)',
-  margin: '20px 0',
-};
-
-const socialLinks = {
-  marginTop: '32px',
-  display: 'flex',
-  justifyContent: 'center',
-  gap: '16px',
-};
-
-const socialLink = {
-  color: '#f4b942',
-  textDecoration: 'none',
-};
-
-const signature = {
-  fontSize: '16px',
-  fontStyle: 'italic',
-  marginTop: '32px',
-  color: '#f4b942',
-};
-
-export default BookingConfirmation;

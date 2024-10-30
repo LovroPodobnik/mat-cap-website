@@ -340,27 +340,22 @@ const Book = () => {
     setError(null);
 
     try {
-      console.log('Submitting form data:', formData);
-      
-      // Save order to Supabase
+      // Save order to database
       const orderResult = await saveOrder(formData);
-      console.log('Order save result:', orderResult);
-
       if (!orderResult.success) {
-        throw new Error(orderResult.error || 'Failed to save order');
+        throw new Error(orderResult.error);
       }
 
-      // Send confirmation email
+      // Send confirmation emails
       const emailResult = await sendBookingEmail(formData);
-      console.log('Email send result:', emailResult);
-
       if (!emailResult.success) {
         console.error('Email sending failed:', emailResult.error);
-        // Continue anyway since order is saved
+        // Continue with success flow even if email fails
       }
 
       setSubmitted(true);
       setCurrentStep(1);
+      // Reset form data
       setFormData({
         personalInfo: {
           fullName: '',

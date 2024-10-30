@@ -34,9 +34,9 @@ const Hero = ({ removeBackground = false }) => {
     <HeroContainer>
       <HeroContent $removeBackground={removeBackground}>
         <StaggerContainer delay={0.2}>
-          <H1 align="center">Mat Cap Tattoo Studio</H1>
+          <H1 $align="center">Mat Cap Tattoo Studio</H1>
           <Spacing size="1rem" />
-          <Paragraph align="center">
+          <Paragraph $align="center">
             Naj vaše ideje zaživijo na koži. Rad izstopim iz cone udobja in ustvarim nekaj povsem novega. Pridite z idejo, odidite
             s tetovažo, ki presega pričakovanja.
           </Paragraph>

@@ -2,34 +2,43 @@ import { css } from 'styled-components'
 
 export const typography = css`
   :root {
-    // Font sizes
-    --font-size-xs: 0.75rem;
-    --font-size-sm: 0.875rem;
-    --font-size-md: 1rem;
-    --font-size-lg: 1.125rem;
-    --font-size-xl: 1.25rem;
-    --font-size-2xl: 1.5rem;
-    --font-size-3xl: 1.875rem;
-    --font-size-4xl: 2.25rem;
+    /* Base Size - 16px */
+    --font-size-base: 1rem;
+
+    /* Type Scale Using Modern Ratio (1.250 - Major Third) */
+    --font-size-xs: calc(var(--font-size-base) * 0.64);      /* 10.24px */
+    --font-size-sm: calc(var(--font-size-base) * 0.8);       /* 12.80px */
+    --font-size-md: var(--font-size-base);                   /* 16.00px */
+    --font-size-lg: calc(var(--font-size-base) * 1.25);      /* 20.00px */
+    --font-size-xl: calc(var(--font-size-base) * 1.563);     /* 25.00px */
+    --font-size-2xl: calc(var(--font-size-base) * 1.953);    /* 31.25px */
+    --font-size-3xl: calc(var(--font-size-base) * 2.441);    /* 39.06px */
+    --font-size-4xl: calc(var(--font-size-base) * 3.052);    /* 48.83px */
     
-    // Line heights
-    --line-height-tight: 1.2;
-    --line-height-base: 1.5;
-    --line-height-relaxed: 1.75;
+    /* Line Heights Mapped to Font Sizes */
+    --line-height-xs: 1.1;    /* Headings */
+    --line-height-sm: 1.2;    /* Subheadings */
+    --line-height-md: 1.5;    /* Body text */
+    --line-height-lg: 1.7;    /* Large body text */
     
-    // Letter spacing
-    --letter-spacing-tight: -0.02em;
-    --letter-spacing-base: -0.01em;
-    --letter-spacing-wide: 0.02em;
+    /* Letter Spacing */
+    --letter-spacing-tight: -0.05em;
+    --letter-spacing-normal: 0;
+    --letter-spacing-wide: 0.05em;
     
-    // Font families
-    --font-family-heading: "Instrument Serif", serif;
-    --font-family-body: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-    
-    // Colors
-    --color-heading: rgba(255, 255, 255, 0.95);
-    --color-text-muted: rgba(255, 255, 255, 0.75);
-    --color-text-subtle: rgba(255, 255, 255, 0.6);
+    /* Font Weights */
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    --font-weight-bold: 700;
+
+    /* Responsive Type Scales */
+    @media (min-width: 768px) {
+      --font-size-base: 1.125rem; /* 18px base for larger screens */
+    }
+
+    @media (min-width: 1024px) {
+      --font-size-base: 1.25rem;  /* 20px base for desktop */
+    }
   }
 
   body {

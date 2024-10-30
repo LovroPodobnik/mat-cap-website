@@ -14,17 +14,16 @@ const baseStyles = css`
   word-break: break-word;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  text-align: ${props => props.align || 'start'};
+  text-align: ${props => props.$align || 'start'};
 `;
 
 const headingStyles = css`
   ${baseStyles}
-  color: var(--color-heading, rgba(255, 255, 255, 0.95));
-  font-family: "Instrument Serif", serif;
-  font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: -0.03em;
+  color: var(--color-heading);
+  font-family: var(--font-family-heading);
+  font-weight: var(--font-weight-normal);
+  line-height: var(--line-height-xs);
+  letter-spacing: var(--letter-spacing-tight);
 `;
 
 const paragraphStyles = css`
@@ -37,17 +36,23 @@ const paragraphStyles = css`
 `;
 
 export const H1 = styled.h1`
-  font-size: var(--font-size-2xl);
-  margin-bottom: 1rem;
-  text-align: ${props => props.$align || 'left'};
-  font-family: 'Instrument Serif', serif;
+  ${headingStyles}
+  font-size: var(--font-size-4xl);
+  margin-bottom: 1em;
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-3xl);
+  }
 `;
 
 export const H2 = styled.h2`
   ${headingStyles}
   font-size: var(--font-size-3xl);
-  margin-bottom: 0.5em;
-  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.4);
+  margin-bottom: 0.8em;
+  
+  @media (max-width: 768px) {
+    font-size: var(--font-size-2xl);
+  }
 `;
 
 export const H3 = styled.h3`
@@ -65,12 +70,18 @@ export const H4 = styled.h4`
 export const Paragraph = styled.p`
   ${paragraphStyles}
   font-size: var(--font-size-md);
-  margin-bottom: 1em;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  line-height: var(--line-height-md);
+  margin-bottom: ${props => props.$noMargin ? '0' : '1.5em'};
   
-  @media (min-width: 768px) {
-    font-size: calc(var(--font-size-md) * 1.05);
-  }
+  ${props => props.$large && css`
+    font-size: var(--font-size-lg);
+    line-height: var(--line-height-lg);
+  `}
+  
+  ${props => props.$small && css`
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-md);
+  `}
 `;
 
 export const SmallText = styled.span`
