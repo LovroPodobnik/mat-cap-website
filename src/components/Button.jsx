@@ -12,6 +12,7 @@ const baseButtonStyles = css`
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.3s ease;
+  width: ${props => props.$fullWidth ? '100%' : 'auto'};
 
   &:disabled {
     opacity: 0.6;
@@ -82,6 +83,7 @@ const Button = ({
   disabled = false,
   size = 'medium',
   variant = 'primary',
+  fullWidth = false,
   to,
   ...props
 }) => {
@@ -92,6 +94,7 @@ const Button = ({
       whileHover={{ scale: disabled ? 1 : 1.05 }}
       whileTap={{ scale: disabled ? 1 : 0.95 }}
       transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+      style={{ width: fullWidth ? '100%' : 'auto' }}
     >
       <Component
         onClick={onClick}
@@ -99,6 +102,7 @@ const Button = ({
         size={size}
         variant={variant}
         to={to}
+        $fullWidth={fullWidth}
         className="springAnimation hoverScale"
         {...props}
       >

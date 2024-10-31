@@ -148,7 +148,11 @@ const NavItemLabel = styled.span`
 
 const NavItem = ({ item, isActive, isSpecial }) => (
   <NavItemContainer>
-    <NavItemLink to={item.href} $isActive={isActive} $isSpecial={isSpecial}>
+    <NavItemLink 
+      to={item.href + (item.href === '/book' ? '#form' : '')} 
+      $isActive={isActive} 
+      $isSpecial={isSpecial}
+    >
       <NavItemIcon as={item.icon} $isActive={isActive} $isSpecial={isSpecial} />
       <NavItemLabel $isActive={isActive} $isSpecial={isSpecial}>
         {item.label}

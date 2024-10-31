@@ -12,6 +12,7 @@ const Container = styled(motion.div)`
   flex-direction: column;
   gap: 1rem;
   z-index: 40;
+  class-name: 'social-links';
 
   @media (max-width: 768px) {
     display: none; // Hide on mobile

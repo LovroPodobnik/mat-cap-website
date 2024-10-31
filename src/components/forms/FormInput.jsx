@@ -34,11 +34,18 @@ const Input = styled.input`
 `
 
 const FormInput = ({ label, onFocus, ...props }) => {
+  const handleFocus = (e) => {
+    if (onFocus && props.expanded) {
+      onFocus(e);
+    }
+  };
+
   return (
     <InputWrapper>
       <Label>{label}</Label>
       <Input 
-        onFocus={onFocus}
+        onFocus={handleFocus}
+        autoFocus={false}
         {...props} 
       />
     </InputWrapper>
