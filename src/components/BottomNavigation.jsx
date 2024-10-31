@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -14,51 +14,48 @@ const navItems = [
 
 const BottomNav = styled(motion.nav)`
   position: fixed;
-  bottom: 0;
+  bottom: env(safe-area-inset-bottom, 0);
   left: 0;
   right: 0;
   z-index: 50;
-  // Add the class name for targeting
+  padding: 0 var(--spacing-sm) calc(var(--spacing-sm) + env(safe-area-inset-bottom, 0));
+  
   &.bottom-nav {
-    transition: opacity 0.3s ease;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 `;
 
 const NavContainer = styled.div`
-  max-width: min(100%, calc(${navItems.length + 1} * 120px)); // Adjust based on number of items
+  max-width: min(100%, calc(${navItems.length + 1} * 120px));
   margin: 0 auto;
-  padding: 0 1rem 1rem;
 `;
 
 const NavContent = styled(motion.div)`
-  background-color: rgba(37, 37, 37, 0.9);
+  background-color: rgba(37, 37, 37, 0.95);
   border: 1px solid #303030;
-  border-radius: 9999px;
-  padding: 0.5rem;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-xs);
   display: flex;
   align-items: stretch;
   justify-content: space-between;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   width: 100%;
-  height: 70px;
-
-  @media (min-width: 768px) {
-    height: 56px;
-  }
+  gap: var(--spacing-xs);
 `;
 
 const NavItemContainer = styled.div`
   display: flex;
   align-items: stretch;
   flex: 1;
-  margin: 0 0.25rem;
   position: relative;
+  min-width: 48px;
 
-  &:not(:last-child):not(:nth-last-child(2))::after {
+  &:not(:last-child)::after {
     content: '';
     position: absolute;
-    right: -0.25rem;
+    right: calc(var(--spacing-xs) * -1);
     top: 15%;
     height: 70%;
     width: 1px;
@@ -78,13 +75,13 @@ const NavItemLink = styled(Link)`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 100%;
-  padding: 0.5rem;
-  border-radius: 12px; // Less radius for mobile
+  padding: var(--spacing-sm) var(--spacing-xs);
+  border-radius: var(--radius-md);
   transition: all 0.2s ease-in-out;
   text-decoration: none;
   color: #BEBEBE;
   background-color: ${props => props.$isActive ? 'rgba(255, 255, 255, 0.1)' : 'transparent'};
+  gap: 6px;
 
   &:hover {
     color: var(--color-primary);
@@ -94,48 +91,48 @@ const NavItemLink = styled(Link)`
   ${props => props.$isSpecial && `
     background-color: var(--color-primary);
     color: #000000;
+    font-weight: 500;
 
     &:hover {
       background-color: var(--color-secondary);
-      color: #000000;
-    }
-
-    // Override any other hover states for special items
-    & ${NavItemIcon}, & ${NavItemLabel} {
       color: #000000;
     }
   `}
 
   @media (min-width: 768px) {
     flex-direction: row;
-    justify-content: center;
-    padding: 0.5rem 1rem;
-    border-radius: 9999px; // Return to pill shape on desktop
+    padding: var(--spacing-xs) var(--spacing-sm);
+    gap: 8px;
+  }
+  
+  &:active {
+    transform: scale(0.95);
   }
 `;
 
 const NavItemIcon = styled.div`
-  width: 1.5rem;
-  height: 1.5rem;
-  margin-bottom: 0.25rem;
+  width: 22px;
+  height: 22px;
   color: ${props => props.$isActive ? 'var(--color-primary)' : 'inherit'};
+  flex-shrink: 0;
+  
   ${props => props.$isSpecial && `
     color: #000000;
   `}
 
   @media (min-width: 768px) {
-    width: 1.25rem;
-    height: 1.25rem;
-    margin-bottom: 0;
-    margin-right: 0.5rem;
+    width: 20px;
+    height: 20px;
   }
 `;
 
 const NavItemLabel = styled.span`
-  font-size: 0.75rem;
+  font-size: 11px;
   font-weight: 500;
   white-space: nowrap;
   color: ${props => props.$isActive ? 'var(--color-text)' : 'inherit'};
+  letter-spacing: -0.2px;
+  
   ${props => props.$isSpecial && `
     color: #000000;
   `}
@@ -143,20 +140,20 @@ const NavItemLabel = styled.span`
   @media (max-width: 767px) {
     display: none;
   }
+  
+  @media (min-width: 768px) {
+    font-size: 12px;
+  }
 `;
 
-const NavItem = ({ item, isActive, isSpecial, isLast }) => (
+const NavItem = ({ item, isActive, isSpecial }) => (
   <NavItemContainer>
-    <motion.div
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
-      style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-    >
-      <NavItemLink to={item.href} $isActive={isActive} $isSpecial={isSpecial} className="springAnimation hoverScale">
-        <NavItemIcon as={item.icon} $isActive={isActive} $isSpecial={isSpecial} />
-        <NavItemLabel $isActive={isActive} $isSpecial={isSpecial}>{item.label}</NavItemLabel>
-      </NavItemLink>
-    </motion.div>
+    <NavItemLink to={item.href} $isActive={isActive} $isSpecial={isSpecial}>
+      <NavItemIcon as={item.icon} $isActive={isActive} $isSpecial={isSpecial} />
+      <NavItemLabel $isActive={isActive} $isSpecial={isSpecial}>
+        {item.label}
+      </NavItemLabel>
+    </NavItemLink>
   </NavItemContainer>
 );
 
@@ -164,9 +161,14 @@ const BottomNavigation = () => {
   const location = useLocation();
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const scrollTimeout = useRef(null);
 
-  useEffect(() => {
-    const handleScroll = () => {
+  const handleScroll = useCallback(() => {
+    if (scrollTimeout.current) {
+      window.cancelAnimationFrame(scrollTimeout.current);
+    }
+
+    scrollTimeout.current = window.requestAnimationFrame(() => {
       const currentScrollY = window.scrollY;
       if (currentScrollY > lastScrollY && currentScrollY > 100) {
         setIsVisible(false);
@@ -174,11 +176,18 @@ const BottomNavigation = () => {
         setIsVisible(true);
       }
       setLastScrollY(currentScrollY);
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    });
   }, [lastScrollY]);
+
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (scrollTimeout.current) {
+        window.cancelAnimationFrame(scrollTimeout.current);
+      }
+    };
+  }, [handleScroll]);
 
   return (
     <AnimatePresence>
@@ -191,19 +200,17 @@ const BottomNavigation = () => {
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
         >
           <NavContainer>
-            <NavContent layout>
-              {navItems.map((item, index) => (
+            <NavContent>
+              {navItems.map((item) => (
                 <NavItem
                   key={item.href}
                   item={item}
                   isActive={location.pathname === item.href}
-                  isLast={index === navItems.length - 1}
                 />
               ))}
               <NavItem
                 item={{ href: '/book', label: 'Book Now', icon: Heart }}
                 isSpecial
-                isLast
               />
             </NavContent>
           </NavContainer>

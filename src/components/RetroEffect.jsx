@@ -16,7 +16,7 @@ const RetroEffect = ({ isEnabled = true }) => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
-    if (!isEnabled) return;
+    if (!isEnabled || document.body.classList.contains('disable-retro-effect')) return;
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');

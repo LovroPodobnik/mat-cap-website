@@ -1,9 +1,10 @@
 import styled from 'styled-components';
 import { fadeIn, slideIn } from './AnimationStyles';
+import { glassMorphism, textShadow, media } from './mixins';
 
 export const HeroContainer = styled.div`
-  color: var(--color-text);
-  padding: 4rem 0;
+  color: var(--color-text-primary);
+  padding: var(--spacing-xl) 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -16,20 +17,23 @@ export const HeroContent = styled.div`
   max-width: 600px;
   text-align: center;
   ${slideIn}
-  background-color: rgba(0, 0, 0, 0.7);
-  padding: 2rem;
-  border-radius: 8px;
-  backdrop-filter: blur(10px);
+  ${glassMorphism}
+  padding: var(--spacing-lg);
+  border-radius: var(--radius-md);
 `;
 
 export const HeroTitle = styled.h1`
   font-family: var(--font-family-heading);
   font-size: var(--font-size-4xl);
   color: var(--color-primary);
-  margin-bottom: 1rem;
+  margin-bottom: var(--spacing-sm);
   letter-spacing: 0.02em;
-  font-weight: 400;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  font-weight: var(--font-weight-regular);
+  ${textShadow.md}
+
+  ${media.tablet} {
+    font-size: var(--font-size-3xl);
+  }
 `;
 
 export const HeroSubtitle = styled.h2`

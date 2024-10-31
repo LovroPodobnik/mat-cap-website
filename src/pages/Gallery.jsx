@@ -1,75 +1,72 @@
-import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import React, { useState, useMemo } from 'react'
+import { motion } from 'framer-motion'
 import styled from 'styled-components'
 import StaggerContainer from '../components/StaggerContainer'
 import GalleryGrid from '../components/GalleryGrid'
 import { H1 } from '../components/Typography'
 import { pageTransition } from '../styles/GlobalStyles'
-import { Grid, Layout } from 'react-feather'
-import ExperimentalGallery from '../components/ExperimentalGallery'
 
 const PageContainer = styled.div`
-  padding: 4rem 0;
+  padding: var(--spacing-xl) 0;
   width: 100%;
   margin: 0 auto;
-  min-height: calc(100vh - 120px);
-`
+  min-height: calc(100vh - var(--header-height));
+  
+  @media (max-width: 768px) {
+    padding: var(--spacing-lg) 0;
+  }
+`;
 
 const GalleryContainer = styled.div`
-  max-width: 400px;
+  width: 100%;
+  max-width: min(600px, 100%);
   margin: 0 auto;
-  padding: 0 1rem;
+  padding: 0 var(--content-padding);
   position: relative;
   z-index: 20;
-
+  
   @media (max-width: 768px) {
-    padding: 0 0.5rem;
+    padding: 0 var(--spacing-sm);
   }
-`
+`;
 
-const ViewToggle = styled.div`
+const CategoryFilter = styled.div`
   display: flex;
   justify-content: center;
-  gap: 1rem;
+  gap: 0.5rem;
   margin: 2rem 0;
-`
+  flex-wrap: wrap;
+  padding: 0 var(--spacing-sm);
+`;
 
-const ToggleButton = styled(motion.button)`
+const FilterButton = styled(motion.button)`
   background: ${props => props.$isActive ? 'rgba(255, 255, 255, 0.1)' : 'transparent'};
   border: 1px solid rgba(255, 255, 255, ${props => props.$isActive ? '0.2' : '0.1'});
   color: ${props => props.$isActive ? 'var(--color-primary)' : 'var(--color-text)'};
-  padding: 0.75rem 1.5rem;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+  padding: var(--spacing-xs) var(--spacing-sm);
+  border-radius: var(--radius-md);
   cursor: pointer;
+  transition: all 0.3s ease;
   font-size: var(--font-size-sm);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-
+  
   &:hover {
     background: rgba(255, 255, 255, 0.1);
     border-color: rgba(255, 255, 255, 0.2);
   }
-
-  svg {
-    width: 16px;
-    height: 16px;
+  
+  &:active {
+    transform: scale(0.98);
   }
-`
+`;
 
 const Gallery = ({ setHideHeader }) => {
-  const [viewMode, setViewMode] = useState('grid');
-
-  const handleViewModeChange = (mode) => {
-    setViewMode(mode);
-    setHideHeader(mode === 'experimental'); // Hide header in experimental mode
-  };
-
-  const handleCloseExperimental = () => {
-    setViewMode('grid');
-    setHideHeader(false); // Show header when closing experimental view
-  };
+  const [activeCategory, setActiveCategory] = useState('all');
+  
+  const categories = [
+    { id: 'all', label: 'All' },
+    { id: 'realism', label: 'Realism' },
+    { id: 'blackwork', label: 'Blackwork' }
+  ];
 
   const galleryImages = [
     {
@@ -158,56 +155,40 @@ const Gallery = ({ setHideHeader }) => {
     }
   ];
 
+  const filteredImages = useMemo(() => {
+    if (activeCategory === 'all') return galleryImages;
+    return galleryImages.filter(img => img.category === activeCategory);
+  }, [activeCategory]);
+
   return (
-    <motion.div {...pageTransition}>
+    <motion.div 
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+    >
       <PageContainer>
         <GalleryContainer>
-          <StaggerContainer>
-            <H1 $align="center">Galerija del</H1>
-            
-            <ViewToggle>
-              <ToggleButton
-                onClick={() => handleViewModeChange('grid')}
-                $isActive={viewMode === 'grid'}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+          <H1 $align="center">Galerija del</H1>
+          
+          <CategoryFilter>
+            {categories.map(category => (
+              <FilterButton
+                key={category.id}
+                $isActive={activeCategory === category.id}
+                onClick={() => setActiveCategory(category.id)}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                <Grid size={16} />
-                Grid View
-              </ToggleButton>
-              <ToggleButton
-                onClick={() => handleViewModeChange('experimental')}
-                $isActive={viewMode === 'experimental'}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                <Layout size={16} />
-                Free View
-              </ToggleButton>
-            </ViewToggle>
+                {category.label}
+              </FilterButton>
+            ))}
+          </CategoryFilter>
 
-            <AnimatePresence mode="wait">
-              {viewMode === 'grid' ? (
-                <motion.div
-                  key="grid"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  exit={{ opacity: 0 }}
-                >
-                  <GalleryGrid 
-                    images={galleryImages} 
-                    setHideHeader={setHideHeader}
-                  />
-                </motion.div>
-              ) : (
-                <ExperimentalGallery 
-                  images={galleryImages} 
-                  onClose={handleCloseExperimental}
-                  setHideHeader={setHideHeader} // Pass setHideHeader to ExperimentalGallery
-                />
-              )}
-            </AnimatePresence>
-          </StaggerContainer>
+          <GalleryGrid 
+            images={filteredImages} 
+            setHideHeader={setHideHeader}
+          />
         </GalleryContainer>
       </PageContainer>
     </motion.div>

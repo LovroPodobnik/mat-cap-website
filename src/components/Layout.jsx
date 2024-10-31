@@ -2,6 +2,7 @@ import React from 'react';
 import styled, { css } from 'styled-components';
 import Header from './Header';
 import BottomNavigation from './BottomNavigation';
+import { media } from '../styles/mixins';
 
 const LayoutContainer = styled.div`
   min-height: 100vh;
@@ -22,15 +23,23 @@ const Main = styled.main`
   display: flex;
   flex-direction: column;
   padding-top: ${props => props.$isHomePage ? '0' : '80px'};
-  background-color: transparent; // Ensure this is transparent
+  background-color: transparent;
+
+  ${media.tablet} {
+    padding-top: ${props => props.$isHomePage ? '0' : '100px'};
+  }
 `;
 
 const ContentContainer = styled.div`
   width: 100%;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 1rem;
-  background-color: transparent; // Ensure this is transparent
+  padding: 0 var(--spacing-md);
+  background-color: transparent;
+
+  ${media.tablet} {
+    padding: 0 var(--spacing-lg);
+  }
 `;
 
 const Layout = ({ children, isHomePage, hideHeader = false, isAdmin }) => {
