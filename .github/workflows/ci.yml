@@ -24,6 +24,17 @@ jobs:
     - name: Build
       run: npm run build
       env:
-        VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-        VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-        # Add other environment variables 
+        # Firebase config
+        VITE_FIREBASE_API_KEY: 'AIzaSyD9092qjFb8NKaaIQxGjsMOBu2I_fXe9w0'
+        VITE_FIREBASE_AUTH_DOMAIN: 'mat-cap-website.firebaseapp.com'
+        VITE_FIREBASE_PROJECT_ID: 'mat-cap-website'
+        VITE_FIREBASE_STORAGE_BUCKET: 'mat-cap-website.firebasestorage.app'
+        VITE_FIREBASE_MESSAGING_SENDER_ID: '387680143832'
+        VITE_FIREBASE_APP_ID: '1:387680143832:web:b28c8deb882ed76e30caad'
+        VITE_FIREBASE_MEASUREMENT_ID: 'G-3VED7L5ZKP'
+        
+        # MailerSend config
+        VITE_MAILERSEND_API_KEY: ${{ secrets.MAILERSEND_API_KEY }}
+        VITE_MAILERSEND_DOMAIN: ${{ secrets.MAILERSEND_DOMAIN }}
+        VITE_MAILERSEND_SENDER_EMAIL: ${{ secrets.MAILERSEND_SENDER_EMAIL }}
+        VITE_MAILERSEND_SENDER_NAME: ${{ secrets.MAILERSEND_SENDER_NAME }}

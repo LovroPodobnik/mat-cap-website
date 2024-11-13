@@ -18,6 +18,7 @@ import DashboardLayout from './components/admin/DashboardLayout'
 import Orders from './pages/admin/Orders'
 import OrderDetails from './pages/admin/OrderDetails'
 import PerformanceTracker from './components/PerformanceTracker'
+import AdminRoute from './components/admin/AdminRoute'
 
 function App() {
   const location = useLocation()
@@ -68,15 +69,17 @@ function App() {
               <SocialMediaLinks />
             </>
           ) : (
-            <ProtectedRoute>
-              <DashboardLayout>
-                <Routes location={location} key={location.pathname}>
-                  {adminRoutes.map(({ path, element }) => (
-                    <Route key={path} path={path} element={element} />
-                  ))}
-                </Routes>
-              </DashboardLayout>
-            </ProtectedRoute>
+            <AdminRoute>
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <Routes location={location} key={location.pathname}>
+                    {adminRoutes.map(({ path, element }) => (
+                      <Route key={path} path={path} element={element} />
+                    ))}
+                  </Routes>
+                </DashboardLayout>
+              </ProtectedRoute>
+            </AdminRoute>
           )}
         </AuthProvider>
       </Suspense>

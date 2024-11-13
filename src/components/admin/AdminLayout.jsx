@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { LogOut, List, User, Home } from 'react-feather';
@@ -125,6 +125,12 @@ const AdminLayout = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
+  useEffect(() => {
+    if (!currentUser) {
+      navigate('/login');
+    }
+  }, [currentUser, navigate]);
+
   const handleLogout = async () => {
     try {
       await logout();
@@ -133,6 +139,10 @@ const AdminLayout = ({ children }) => {
       console.error('Failed to log out:', error);
     }
   };
+
+  if (!currentUser) {
+    return <div>Loading...</div>;
+  }
 
   const isActive = (path) => {
     return location.pathname.startsWith(path);

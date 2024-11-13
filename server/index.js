@@ -1,14 +1,9 @@
+const functions = require('firebase-functions');
 const express = require('express');
 const cors = require('cors');
-require('dotenv').config();
 
 const app = express();
-app.use(cors({
-  origin: process.env.CORS_ORIGIN,
-  methods: ['POST'],
-  credentials: true
-}));
-app.use(express.json());
+app.use(cors({ origin: true }));
 
 // Main email sending function
 async function sendEmail(to, subject, htmlContent, textContent) {
@@ -119,11 +114,5 @@ app.post('/send-email', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-  console.log('Email configuration:', {
-    senderEmail: process.env.MAILERSEND_SENDER_EMAIL,
-    senderName: process.env.MAILERSEND_SENDER_NAME
-  });
-});
+// Export the Express app as a Firebase Function
+exports.api = functions.https.onRequest(app);

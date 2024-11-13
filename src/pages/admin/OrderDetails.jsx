@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { supabase } from '../../config/supabase';
+import { doc, getDoc, updateDoc } from 'firebase/firestore';
+import { db } from '../../config/firebase';
+import { useAuth } from '../../contexts/AuthContext';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { H1 } from '../../components/Typography';
@@ -165,6 +167,7 @@ const ImageModal = styled(motion.div)`
 const OrderDetails = () => {
   const { orderId } = useParams();
   const navigate = useNavigate();
+  const { auth } = useAuth();
   const [order, setOrder] = useState(null);
   const [status, setStatus] = useState('');
   const [notes, setNotes] = useState('');
@@ -174,32 +177,23 @@ const OrderDetails = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const { data, error } = await supabase
-          .from('orders')
-          .select('*')
-          .eq('id', orderId)
-          .single();
+        if (!auth?.currentUser) {
+          console.log('Waiting for auth...');
+          return;
+        }
 
-        if (error) throw error;
+        const docRef = doc(db, 'orders', orderId);
+        const docSnap = await getDoc(docRef);
 
-        // Parse JSON strings if needed
-        const parsedData = {
-          ...data,
-          personal_info: typeof data.personal_info === 'string' 
-            ? JSON.parse(data.personal_info) 
-            : data.personal_info,
-          tattoo_details: typeof data.tattoo_details === 'string'
-            ? JSON.parse(data.tattoo_details)
-            : data.tattoo_details,
-          tattoo_idea: typeof data.tattoo_idea === 'string'
-            ? JSON.parse(data.tattoo_idea)
-            : data.tattoo_idea
-        };
+        if (!docSnap.exists()) {
+          throw new Error('Order not found');
+        }
 
-        console.log('Fetched order:', parsedData);
-        setOrder(parsedData);
-        setStatus(parsedData.status || 'new');
-        setNotes(parsedData.notes || '');
+        const data = docSnap.data();
+        console.log('Fetched order:', data);
+        setOrder(data);
+        setStatus(data.status || 'new');
+        setNotes(data.notes || '');
       } catch (error) {
         console.error('Error fetching order:', error);
       } finally {
@@ -207,21 +201,23 @@ const OrderDetails = () => {
       }
     };
 
-    fetchOrder();
-  }, [orderId]);
+    if (auth?.currentUser) {
+      fetchOrder();
+    }
+  }, [orderId, auth?.currentUser]);
 
   const handleSave = async () => {
     try {
-      const { error } = await supabase
-        .from('orders')
-        .update({
-          status,
-          notes,
-          updated_at: new Date().toISOString()
-        })
-        .eq('id', orderId);
+      if (!auth?.currentUser) {
+        throw new Error('Not authenticated');
+      }
 
-      if (error) throw error;
+      const docRef = doc(db, 'orders', orderId);
+      await updateDoc(docRef, {
+        status,
+        notes,
+        updated_at: new Date().toISOString()
+      });
       // Show success message
     } catch (error) {
       console.error('Error updating order:', error);

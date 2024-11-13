@@ -4,7 +4,8 @@ import { useAuth } from '../contexts/AuthContext';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { H1 } from '../components/Typography';
-import { supabase } from '../config/supabase';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../config/firebase';
 
 const LoginContainer = styled.div`
   min-height: 100vh;
@@ -61,25 +62,36 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, auth } = useAuth();
   const navigate = useNavigate();
 
   const testConnection = async () => {
+    if (!auth?.currentUser) {
+      console.log('No authenticated user, skipping connection test');
+      return;
+    }
+    
     try {
-      const { data, error } = await supabase
-        .from('orders')
-        .select('count')
-        .single();
-
-      if (error) throw error;
-      console.log('Database connection successful:', data);
+      const ordersRef = collection(db, 'orders');
+      const snapshot = await getDocs(ordersRef);
+      console.log('Firebase connection successful:', snapshot.size, 'orders found');
     } catch (err) {
-      console.error('Database connection error:', err);
+      console.error('Firebase connection error:', err);
     }
   };
 
   useEffect(() => {
-    testConnection();
+    if (auth?.currentUser) {
+      testConnection();
+    }
+  }, [auth?.currentUser]);
+
+  useEffect(() => {
+    console.log('Firebase config loaded:', {
+      apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+      projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+      // Log a few values to verify env vars are loading
+    });
   }, []);
 
   const handleSubmit = async (e) => {
@@ -89,14 +101,10 @@ const Login = () => {
       setError('');
       setLoading(true);
       console.log('Attempting login with:', email);
-      const { data, error } = await login(email, password);
+      await login(email, password);
       
-      if (error) {
-        console.error('Login error:', error);
-        throw error;
-      }
+      await testConnection();
       
-      console.log('Login successful:', data);
       navigate('/admin/orders');
     } catch (err) {
       setError('Failed to sign in: ' + err.message);
@@ -113,7 +121,7 @@ const Login = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        <H1 align="center" style={{ marginBottom: '2rem' }}>Admin Login</H1>
+        <H1 $align="center" style={{ marginBottom: '2rem' }}>Admin Login</H1>
         
         {error && <ErrorMessage>{error}</ErrorMessage>}
         

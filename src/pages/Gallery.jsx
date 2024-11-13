@@ -7,13 +7,13 @@ import { H1 } from '../components/Typography'
 import { pageTransition } from '../styles/GlobalStyles'
 
 const PageContainer = styled.div`
-  padding: var(--spacing-xl) 0;
+  padding: var(--page-padding-top) 0;
   width: 100%;
   margin: 0 auto;
   min-height: calc(100vh - var(--header-height));
   
   @media (max-width: 768px) {
-    padding: var(--spacing-lg) 0;
+    padding: var(--page-padding-top-mobile) 0;
   }
 `;
 
@@ -21,12 +21,12 @@ const GalleryContainer = styled.div`
   width: 100%;
   max-width: min(600px, 100%);
   margin: 0 auto;
-  padding: 0 var(--content-padding);
+  padding: var(--spacing-lg) var(--content-padding);
   position: relative;
   z-index: 20;
   
   @media (max-width: 768px) {
-    padding: 0 var(--spacing-sm);
+    padding: var(--spacing-md) var(--spacing-sm);
   }
 `;
 
@@ -56,6 +56,14 @@ const FilterButton = styled(motion.button)`
   
   &:active {
     transform: scale(0.98);
+  }
+`;
+
+const StyledH1 = styled(H1)`
+  margin-bottom: var(--spacing-lg);
+  
+  @media (max-width: 768px) {
+    margin-bottom: var(--spacing-md);
   }
 `;
 
@@ -169,7 +177,7 @@ const Gallery = ({ setHideHeader }) => {
     >
       <PageContainer>
         <GalleryContainer>
-          <H1 $align="center">Galerija del</H1>
+          <StyledH1 $align="center">Galerija del</StyledH1>
           
           <CategoryFilter>
             {categories.map(category => (

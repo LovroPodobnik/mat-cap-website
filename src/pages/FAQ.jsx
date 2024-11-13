@@ -7,19 +7,32 @@ import { pageTransition } from '../styles/GlobalStyles'
 import FAQAccordion from '../components/FAQAccordion'
 
 const PageContainer = styled.div`
-  padding: 4rem 0;
+  padding: var(--page-padding-top) 0;
   width: 100%;
   margin: 0 auto;
-  min-height: calc(100vh - 120px);
+  min-height: calc(100vh - var(--header-height));
+  
+  @media (max-width: 768px) {
+    padding: var(--page-padding-top-mobile) 0;
+  }
 `
 
 const FAQContainer = styled.div`
-  max-width: 800px;
+  width: 100%;
+  max-width: var(--content-max-width);
   margin: 0 auto;
-  padding: 0 1rem;
-
+  padding: var(--spacing-lg) var(--content-padding);
+  
   @media (max-width: 768px) {
-    padding: 0 0.5rem;
+    padding: var(--spacing-md) var(--spacing-sm);
+  }
+`
+
+const StyledH1 = styled(H1)`
+  margin-bottom: var(--spacing-lg);
+  
+  @media (max-width: 768px) {
+    margin-bottom: var(--spacing-md);
   }
 `
 
@@ -86,7 +99,7 @@ const FAQ = () => {
       <PageContainer>
         <FAQContainer>
           <StaggerContainer>
-            <H1 align="center">Pogosta vprašanja</H1>
+            <StyledH1 $align="center">Pogosta vprašanja</StyledH1>
             <FAQAccordion 
               items={faqData} 
               setHideHeader={setHideHeader} 

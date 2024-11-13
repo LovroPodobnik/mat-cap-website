@@ -1,114 +1,66 @@
-import React from 'react';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
 
-const baseButtonStyles = css`
+const StyledButton = styled(motion.button)`
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
+  padding: ${props => props.$size === 'small' ? '0.5rem 1rem' : '1rem 2rem'};
+  background: ${props => props.$variant === 'outline' 
+    ? 'transparent' 
+    : 'var(--color-primary)'};
+  border: 1px solid ${props => props.$variant === 'outline' 
+    ? 'var(--color-primary)' 
+    : 'transparent'};
+  border-radius: 8px;
+  color: ${props => props.$variant === 'outline' 
+    ? 'var(--color-primary)' 
+    : 'var(--color-background)'};
+  font-size: var(--font-size-sm);
   font-weight: 500;
-  letter-spacing: var(--letter-spacing-wide);
-  text-transform: uppercase;
   cursor: pointer;
-  transition: all 0.3s ease;
-  width: ${props => props.$fullWidth ? '100%' : 'auto'};
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  width: ${props => props.fullWidth ? '100%' : 'auto'};
+
+  &:hover {
+    background: ${props => props.$variant === 'outline' 
+      ? 'rgba(255, 215, 0, 0.1)' 
+      : 'var(--color-secondary)'};
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
 
   &:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
+    pointer-events: none;
   }
 `;
 
-const sizeStyles = {
-  small: css`
-    font-size: var(--font-size-sm);
-    padding: 0.5rem 1rem;
-  `,
-  medium: css`
-    font-size: var(--font-size-md);
-    padding: 0.75rem 1.5rem;
-  `,
-  large: css`
-    font-size: var(--font-size-lg);
-    padding: 1rem 2rem;
-  `,
-};
-
-const variantStyles = {
-  primary: css`
-    background-color: var(--color-primary);
-    color: var(--color-background);
-    &:hover:not(:disabled) {
-      background-color: var(--color-secondary);
-    }
-  `,
-  secondary: css`
-    background-color: var(--color-secondary);
-    color: var(--color-background);
-    &:hover:not(:disabled) {
-      background-color: var(--color-primary);
-    }
-  `,
-  outline: css`
-    background-color: transparent;
-    color: var(--color-primary);
-    border: 2px solid var(--color-primary);
-    &:hover:not(:disabled) {
-      background-color: var(--color-primary);
-      color: #000; // Changed to black on hover
-    }
-  `,
-};
-
-const StyledButton = styled.button`
-  ${baseButtonStyles}
-  ${({ size }) => sizeStyles[size] || sizeStyles.medium}
-  ${({ variant }) => variantStyles[variant] || variantStyles.primary}
-  border: none;
-  border-radius: 4px;
-`;
-
-const StyledLink = styled(Link)`
-  ${baseButtonStyles}
-  ${({ size }) => sizeStyles[size] || sizeStyles.medium}
-  ${({ variant }) => variantStyles[variant] || variantStyles.primary}
-  text-decoration: none;
-  border-radius: 4px;
-`;
-
-const Button = ({
-  children,
-  onClick,
-  disabled = false,
+const Button = ({ 
+  children, 
+  $variant = 'primary', 
   size = 'medium',
-  variant = 'primary',
   fullWidth = false,
-  to,
-  ...props
+  ...props 
 }) => {
-  const Component = to ? StyledLink : StyledButton;
-  
   return (
-    <motion.div
-      whileHover={{ scale: disabled ? 1 : 1.05 }}
-      whileTap={{ scale: disabled ? 1 : 0.95 }}
-      transition={{ type: 'spring', stiffness: 400, damping: 17 }}
-      style={{ width: fullWidth ? '100%' : 'auto' }}
+    <StyledButton
+      $variant={$variant}
+      $size={size}
+      fullWidth={fullWidth}
+      whileHover={{ scale: 1.02 }}
+      whileTap={{ scale: 0.98 }}
+      {...props}
     >
-      <Component
-        onClick={onClick}
-        disabled={disabled}
-        size={size}
-        variant={variant}
-        to={to}
-        $fullWidth={fullWidth}
-        className="springAnimation hoverScale"
-        {...props}
-      >
-        {children}
-      </Component>
-    </motion.div>
+      {children}
+    </StyledButton>
   );
 };
 

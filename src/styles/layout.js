@@ -3,25 +3,27 @@ import { media } from './mixins'
 
 export const layout = css`
   :root {
-    /* Base mobile values */
-    --max-width: 100%;
-    --content-padding: var(--spacing-sm);
-    --header-height: 60px;
+    /* Header measurements */
+    --header-height: 80px;
+    --header-height-mobile: 60px;
     
-    /* Progressive enhancement */
-    ${media.tablet} {
-      --max-width: 460px;
-      --content-padding: var(--spacing-md);
-      --header-height: 80px;
+    /* Content spacing */
+    --content-spacing-top: calc(var(--header-height) + var(--spacing-xl));
+    --content-spacing-top-mobile: calc(var(--header-height-mobile) + var(--spacing-lg));
+    
+    /* Page specific spacing */
+    --page-padding-top: var(--spacing-xl);
+    --page-padding-top-mobile: var(--spacing-lg);
+    
+    /* Container widths */
+    --max-width: 460px;
+    --content-max-width: 800px;
+    
+    @media (max-width: 768px) {
+      --header-height: var(--header-height-mobile);
+      --content-spacing-top: var(--content-spacing-top-mobile);
+      --page-padding-top: var(--page-padding-top-mobile);
     }
-    
-    /* Add viewport height variables */
-    --vh: 1vh;
-    --dvh: 1dvh;
-    
-    /* Add safe area insets */
-    --safe-area-inset-top: env(safe-area-inset-top, 0px);
-    --safe-area-inset-bottom: env(safe-area-inset-bottom, 0px);
   }
 
   /* Common layout utilities */

@@ -5,7 +5,7 @@ import FormInput from './FormInput'
 import { Upload, X } from 'react-feather'
 import FormSelect from './FormSelect'
 import Switch from './Switch'
-import { uploadImage, deleteImage } from '../../config/supabase'
+import { uploadImage, deleteImage } from '../../config/storage'
 
 const StepContainer = styled(motion.div)`
   // Add any specific styling needed
@@ -231,7 +231,7 @@ const TattooDetailsStep = ({ formData, setFormData, onFocus }) => {
 
       <ImageUploadContainer>
         <Label>Slika lokacije (opcijsko)</Label>
-        <UploadButton>
+        <UploadButton $variant="outline" disabled={uploading}>
           <Upload size={16} />
           {uploading ? 'Nalagam...' : 'Naloži sliko'}
           <input

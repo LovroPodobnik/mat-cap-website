@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styled from 'styled-components'
 import { motion } from 'framer-motion'
 import { Upload, X } from 'react-feather'
-import { uploadImage, deleteImage } from '../../config/supabase';
+import { uploadImage, deleteImage } from '../../config/storage';
 
 const StepContainer = styled(motion.div)`
   // Add any specific styling needed
@@ -204,7 +204,7 @@ const TattooIdeaStep = ({ formData, setFormData, onFocus }) => {
 
       <ImageUploadContainer>
         <Label>Referenčne slike (opcijsko)</Label>
-        <UploadButton>
+        <UploadButton $variant="outline" disabled={uploading}>
           <Upload size={16} />
           Naloži slike
           <input
@@ -213,6 +213,7 @@ const TattooIdeaStep = ({ formData, setFormData, onFocus }) => {
             multiple
             onChange={handleImageUpload}
             onFocus={onFocus}
+            disabled={uploading}
           />
         </UploadButton>
 

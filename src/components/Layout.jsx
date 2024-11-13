@@ -22,11 +22,11 @@ const Main = styled.main`
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding-top: ${props => props.$isHomePage ? '0' : '80px'};
+  padding-top: ${props => props.$isHomePage ? '0' : 'var(--header-height)'};
   background-color: transparent;
 
   ${media.tablet} {
-    padding-top: ${props => props.$isHomePage ? '0' : '100px'};
+    padding-top: ${props => props.$isHomePage ? '0' : 'calc(var(--header-height) + var(--spacing-lg))'};
   }
 `;
 
@@ -34,11 +34,11 @@ const ContentContainer = styled.div`
   width: 100%;
   max-width: var(--max-width);
   margin: 0 auto;
-  padding: 0 var(--spacing-md);
+  padding: var(--spacing-lg) var(--spacing-md);
   background-color: transparent;
 
   ${media.tablet} {
-    padding: 0 var(--spacing-lg);
+    padding: var(--spacing-xl) var(--spacing-lg);
   }
 `;
 

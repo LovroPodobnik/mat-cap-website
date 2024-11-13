@@ -21,31 +21,35 @@ L.Icon.Default.mergeOptions({
 });
 
 const PageContainer = styled(Container)`
-  padding: 2rem 1rem;
+  padding: var(--page-padding-top) var(--spacing-md);
   display: flex;
   flex-direction: column;
   align-items: center;
-  min-height: calc(100vh - 120px); // Account for header/footer
+  min-height: calc(100vh - var(--header-height));
+
+  @media (max-width: 768px) {
+    padding: var(--page-padding-top-mobile) var(--spacing-sm);
+  }
 `
 
 const ContactGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1.5rem;
+  gap: var(--spacing-lg);
   width: 100%;
-  margin: 2rem 0;
+  margin: var(--spacing-xl) 0;
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: var(--spacing-md);
   }
 `
 
 const ContactCard = styled(motion.div)`
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
-  border-radius: 12px;
-  padding: 2rem;
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-lg);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -72,9 +76,9 @@ const ContactCard = styled(motion.div)`
 `
 
 const IconWrapper = styled.div`
-  margin-bottom: 1.5rem;
+  margin-bottom: var(--spacing-lg);
   color: var(--color-primary);
-  padding: 1rem;
+  padding: var(--spacing-md);
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -83,11 +87,11 @@ const IconWrapper = styled.div`
 const MapWrapper = styled(motion.div)`
   width: 100%;
   height: 400px;
-  border-radius: 12px;
+  border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
-  margin: 2rem 0;
+  margin: var(--spacing-xl) 0;
 
   .leaflet-container {
     height: 100%;
@@ -108,14 +112,15 @@ const MapWrapper = styled(motion.div)`
 
   @media (max-width: 768px) {
     height: 300px;
+    margin: var(--spacing-lg) 0;
   }
 `
 
 const SocialLinks = styled.div`
   display: flex;
   justify-content: center;
-  gap: 2rem;
-  margin: 2rem 0;
+  gap: var(--spacing-lg);
+  margin: var(--spacing-xl) 0;
 `
 
 const SocialLink = styled(motion.a)`
@@ -137,8 +142,16 @@ const Divider = styled.hr`
   width: 100%;
   border: none;
   border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin: 2rem 0;
+  margin: var(--spacing-xl) 0;
 `
+
+const StyledH1 = styled(H1)`
+  margin-bottom: var(--spacing-lg);
+  
+  @media (max-width: 768px) {
+    margin-bottom: var(--spacing-md);
+  }
+`;
 
 const Contact = () => {
   const position = [46.225890, 14.612338]
@@ -147,8 +160,7 @@ const Contact = () => {
     <motion.div {...pageTransition}>
       <PageContainer>
         <StaggerContainer>
-          <H1 align="center">Kontaktirajte nas</H1>
-          <Spacing size="1rem" />
+          <StyledH1 $align="center">Kontaktirajte nas</StyledH1>
           
           <ContactGrid>
             <ContactCard whileHover={{ y: -5 }}>

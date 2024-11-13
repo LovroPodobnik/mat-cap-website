@@ -315,7 +315,7 @@ const ActionContainer = styled.div`
 const Book = () => {
   const location = useLocation();
   const [currentStep, setCurrentStep] = useState(1);
-  const [isExpanded, setIsExpanded] = useState(location.hash === '#form');
+  const [isExpanded, setIsExpanded] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(null);
@@ -347,13 +347,6 @@ const Book = () => {
       window.history.replaceState(null, '', location.pathname);
     }
   }, [isExpanded, location.pathname]);
-
-  // Handle direct navigation to #form
-  useEffect(() => {
-    if (location.hash === '#form') {
-      setIsExpanded(true);
-    }
-  }, [location.hash]);
 
   // Handle escape key to close expanded form
   useEffect(() => {
@@ -435,7 +428,7 @@ const Book = () => {
     const props = {
       formData,
       setFormData,
-      onFocus: () => setIsExpanded(true)
+      onFocus: () => isExpanded && setIsExpanded(true)
     };
 
     switch (currentStep) {
@@ -551,7 +544,7 @@ const Book = () => {
             <H1 $align="center">Dogovorite se za termin</H1>
             <Button 
               onClick={() => setIsExpanded(true)}
-              variant="primary"
+              $variant="primary"
               size="large"
               fullWidth
             >
@@ -565,6 +558,9 @@ const Book = () => {
         <Modal 
           isOpen={isExpanded} 
           onClose={() => setIsExpanded(false)}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
         >
           <StepIndicator>
             {[...Array(totalSteps)].map((_, index) => (

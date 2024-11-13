@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { supabase } from '../../config/supabase';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { H1 } from '../../components/Typography';
@@ -7,6 +6,9 @@ import { useNavigate } from 'react-router-dom';
 import { Search, Filter, Calendar, X } from 'react-feather';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import { collection, query, orderBy, getDocs } from 'firebase/firestore';
+import { db } from '../../config/firebase';
+import { auth } from '../../config/firebase';
 
 const OrdersContainer = styled.div`
   width: 100%;
@@ -322,8 +324,10 @@ const Orders = () => {
   const dateRef = useRef(null);
 
   useEffect(() => {
-    fetchOrders();
-  }, []);
+    if (auth.currentUser) {
+      fetchOrders();
+    }
+  }, [auth.currentUser]);
 
   useEffect(() => {
     filterOrders();
@@ -346,17 +350,32 @@ const Orders = () => {
   const fetchOrders = async () => {
     try {
       console.log('Fetching orders...');
-      const { data, error } = await supabase
-        .from('orders')
-        .select('*')
-        .order('created_at', { ascending: false });
+      if (!auth.currentUser) {
+        console.log('Waiting for auth...');
+        return;
+      }
 
-      if (error) throw error;
+      console.log('User authenticated:', auth.currentUser.email);
+      const ordersRef = collection(db, 'orders');
+      const q = query(ordersRef, orderBy('created_at', 'desc'));
+      
+      console.log('Executing query...');
+      const snapshot = await getDocs(q);
+      
+      console.log('Raw snapshot:', snapshot);
+      const data = snapshot.docs.map(doc => {
+        console.log('Document data:', doc.data());
+        return {
+          id: doc.id,
+          ...doc.data()
+        };
+      });
 
-      console.log('Fetched orders:', data);
+      console.log('Processed orders:', data);
       setOrders(data || []);
     } catch (err) {
       console.error('Error fetching orders:', err);
+      console.error('Error details:', err.code, err.message);
       setError(err.message);
     }
   };

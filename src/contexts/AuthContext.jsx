@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
-import { supabase } from '../config/supabase';
+import { auth } from '../config/firebase';
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'firebase/auth';
 
 const AuthContext = createContext();
 
@@ -12,33 +13,27 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check active sessions and sets the user
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log('Initial session:', session);
-      setCurrentUser(session?.user ?? null);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setCurrentUser(user);
       setLoading(false);
     });
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      console.log('Auth state changed:', session);
-      setCurrentUser(session?.user ?? null);
-    });
-
-    return () => subscription.unsubscribe();
+    return unsubscribe;
   }, []);
 
   const login = (email, password) => {
-    return supabase.auth.signInWithPassword({ email, password });
+    return signInWithEmailAndPassword(auth, email, password);
   };
 
   const logout = () => {
-    return supabase.auth.signOut();
+    return signOut(auth);
   };
 
   const value = {
     currentUser,
     login,
-    logout
+    logout,
+    auth
   };
 
   return (
